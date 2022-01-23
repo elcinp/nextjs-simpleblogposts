@@ -1,7 +1,7 @@
 export const videos =[
     {
         id:1,
-        name:"NexJs",
+        name:"NextJs",
         content:"Learn Next.js from Scratch"
     },
     {

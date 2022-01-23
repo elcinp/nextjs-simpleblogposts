@@ -1,10 +1,11 @@
 import React from "react";
+import { URL } from "../../environment/index";
 
-const PostDetails = ({ post }) => {
+const VideoDetails = ({ video }) => {
   return (
     <div>
-      <h3>{post.title}</h3>
-      <p>{post.body}</p>
+      <h3>{video.name}</h3>
+      <p>{video.content}</p>
     </div>
   );
 };
@@ -12,12 +13,12 @@ const PostDetails = ({ post }) => {
 
 
 export const getStaticPaths = async () => {
-  const res = await fetch(`https://jsonplaceholder.typicode.com/posts/`);
-  const posts = await res.json();
+  const res = await fetch(`${URL}/api/videos`);
+  const videos = await res.json();
 
-  const paths = posts.map((post) => {
+  const paths = videos.map((video) => {
     return {
-      params: { id: post.id.toString() },
+      params: { id: video.id.toString() },
     };
   });
   return {
@@ -27,13 +28,13 @@ export const getStaticPaths = async () => {
 };
 
 export const getStaticProps = async(context) => {
-    const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${context.params.id}`)
-    const post = await res.json()
+    const res = await fetch(`${URL}/api/videos/${context.params.id}`)
+    const video = await res.json()
     return{
         props:{
-            post,
+            video,
         },
     }
 }
 
-export default PostDetails;
+export default VideoDetails;
