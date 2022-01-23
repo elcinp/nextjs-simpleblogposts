@@ -1,14 +1,15 @@
-import React from 'react';
+import React from "react";
 
-const PostDetails = ({post}) => {
+const PostDetails = ({ post }) => {
   return (
-
-      <div>
-          <h3>{post.title}</h3>
-          <p>{post.body}</p>
-      </div>
-  )
+    <div>
+      <h3>{post.title}</h3>
+      <p>{post.body}</p>
+    </div>
+  );
 };
+
+//Server Side rendering
 
 // export const getServerSideProps = async (context) => {
 //     const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${context.params.id}`)
@@ -21,14 +22,29 @@ const PostDetails = ({post}) => {
 // }
 
 
-export const getStaticPaths = async () =>{
-    const res = await fetch(`https://jsonplaceholder.typicode.com/posts/`)
-    const posts = await res.json();
+export const getStaticPaths = async () => {
+  const res = await fetch(`https://jsonplaceholder.typicode.com/posts/`);
+  const posts = await res.json();
+
+  const paths = posts.map((post) => {
+    return {
+      params: { id: post.id.toString() },
+    };
+  });
+  return {
+    paths,
+    fallback: true,
+  };
+};
+
+export const getStaticProps = async(context) => {
+    const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${context.params.id}`)
+    const post = await res.json()
     return{
-        paths:[
-            {params:{ ... }}
-        ],
-        fallback:true
+        props:{
+            post,
+        },
     }
 }
+
 export default PostDetails;
